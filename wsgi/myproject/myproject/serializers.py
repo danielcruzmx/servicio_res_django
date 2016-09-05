@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
+from calculo.models import Ispt, Regla, Constante
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -10,5 +11,19 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ('url', 'name')
+
+class IsptSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Ispt
+        fields = ('fecha_fin', 'fecha_ini', 'tipo', 'linferior','superior','bruto','cuota','excedente','subsidio')
         
+class ConstanteSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Constante
+        fields = ('constante', 'valor')
         
+class ReglaSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Regla
+        fields = ('tipo', 'concepto', 'variable', 'valor', 'descripcion', 'formula', \
+                  'jerarquias','niveles', 'nombramientos', 'grupos', 'tipo_calculo', 'codigo_salida' )

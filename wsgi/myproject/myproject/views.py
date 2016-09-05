@@ -1,11 +1,12 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, status
-from serializers import UserSerializer, GroupSerializer
+from serializers import UserSerializer, GroupSerializer, IsptSerializer, ReglaSerializer, ConstanteSerializer
 from calculo.pago import Pago, PagoSerializer
-from rest_framework.parsers import JSONParser
+#from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from rest_framework.views import APIView
+#from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
+from calculo.models import Ispt, Regla, Constante
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -21,16 +22,27 @@ class GroupViewSet(viewsets.ModelViewSet):
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
 
-class CalculoView(APIView):
+class IsptViewSet(viewsets.ModelViewSet):
     """
-    A view that can accept POST requests with JSON content.
+    API endpoint that allows users to be viewed or edited.
     """
-    permission_classes = (AllowAny,)
-    parser_classes = (JSONParser,)
+    queryset = Ispt.objects.all().order_by('-tipo', 'linferior')
+    serializer_class = IsptSerializer
 
-    def post(self, request, format=None):
-        return Response({'received data': request.data})
-
+class ReglaViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Regla.objects.all().order_by('id')
+    serializer_class = ReglaSerializer
+    
+class ConstanteViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Constante.objects.all()
+    serializer_class = ConstanteSerializer    
+    
 
 pagos = {1: Pago(id = 1, rfc='AAAA850101000', plaza=100, unidad='700', grupo='presupuestal', \
                 nivel='N33', nombramiento='confianza', jerarquia='mando medio', \
