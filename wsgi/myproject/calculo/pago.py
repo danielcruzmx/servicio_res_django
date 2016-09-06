@@ -17,7 +17,6 @@ GRUPOS = (
     'eventual'
 )
 
-
 class Pago(object):
 
     def __init__(self, **kwargs):
@@ -25,8 +24,14 @@ class Pago(object):
                       'jerarquia','sueldo','compensacion','sobresueldo', 'conceptospago',\
                       'conceptospagados','pensiones'):
             setattr(self, field, kwargs.get(field, None))
-    
-    
+
+    def setconceptospagados(self, conceptospagados):
+	  self.conceptospagados = conceptospagados
+
+#class ConceptoSerializer(serializers.Serializer):
+#    cve = serializers.CharField(max_length=13)
+#    valor = serializers.DecimalField(max_digits=10, decimal_places=2)
+
 class PagoSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)    
     rfc = serializers.CharField(max_length=13)
@@ -40,7 +45,7 @@ class PagoSerializer(serializers.Serializer):
     compensacion=serializers.DecimalField(max_digits=10, decimal_places=2)
     sobresueldo=serializers.DecimalField(max_digits=10, decimal_places=2)
     conceptospago=serializers.CharField(max_length=20)
-    conceptospagados=serializers.CharField(max_length=20)
+    conceptospagados= serializers.DictField()
     pensiones=serializers.CharField(max_length=20)
     
     def create(self, validated_data):

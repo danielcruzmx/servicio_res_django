@@ -2,11 +2,10 @@ from django.contrib.auth.models import User, Group
 from rest_framework import viewsets, status
 from serializers import UserSerializer, GroupSerializer, IsptSerializer, ReglaSerializer, ConstanteSerializer
 from calculo.pago import Pago, PagoSerializer
-#from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-#from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from calculo.models import Ispt, Regla, Constante
+from calculo.calc import calc
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -47,7 +46,7 @@ class ConstanteViewSet(viewsets.ModelViewSet):
 pagos = {1: Pago(id = 1, rfc='AAAA850101000', plaza=100, unidad='700', grupo='presupuestal', \
                 nivel='N33', nombramiento='confianza', jerarquia='mando medio', \
                 sueldo=8357.21, compensacion=40970.45, conceptospago='lista conceptos', \
-                conceptospagados='lista conceptos', pensiones='lista pensiones', sobresueldo=0)}
+                conceptospagados={}, pensiones='lista pensiones', sobresueldo=0)}
 
 def get_next_pago_id():
     return max(pagos) + 1
@@ -68,7 +67,8 @@ class PagoViewSet(viewsets.ViewSet):
             pago = serializer.save()
             pago.id = get_next_pago_id()
             #
-            # CALCULAR PAGO
+            x = calc(pago)
+            pago.setconceptospagados(x)
             #
             pagos[pago.id] = pago
             return Response(serializer.data, status=status.HTTP_201_CREATED)
