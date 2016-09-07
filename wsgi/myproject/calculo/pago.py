@@ -28,9 +28,23 @@ class Pago(object):
     def setconceptospagados(self, conceptospagados):
 	  self.conceptospagados = conceptospagados
 
-#class ConceptoSerializer(serializers.Serializer):
-#    cve = serializers.CharField(max_length=13)
-#    valor = serializers.DecimalField(max_digits=10, decimal_places=2)
+class ConceptoSerializer(serializers.Serializer):
+    tipo = serializers.CharField(max_length=2)
+    concepto = serializers.CharField(max_length=4)
+    valor = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+class ConceptoPagadoSerializer(serializers.Serializer):
+    tipo = serializers.CharField(max_length=2)
+    concepto = serializers.CharField(max_length=4)
+    descripcion = serializers.CharField(max_length=40)
+    valor = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+class PensionSerializer(serializers.Serializer):
+    numero = serializers.IntegerField()
+    beneficiario = serializers.CharField(max_length=40)
+    monto = serializers.DecimalField(max_digits=10, decimal_places=2)
+    porcentaje = serializers.DecimalField(max_digits=10, decimal_places=2)
+    conceptos = serializers.CharField(max_length=200)
 
 class PagoSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)    
@@ -44,9 +58,11 @@ class PagoSerializer(serializers.Serializer):
     sueldo=serializers.DecimalField(max_digits=10, decimal_places=2)
     compensacion=serializers.DecimalField(max_digits=10, decimal_places=2)
     sobresueldo=serializers.DecimalField(max_digits=10, decimal_places=2)
-    conceptospago=serializers.CharField(max_length=20)
-    conceptospagados= serializers.DictField()
-    pensiones=serializers.CharField(max_length=20)
+    conceptospago=ConceptoSerializer(many=True)
+    conceptospagados= serializers.ListField()
+    #conceptospagados= ConceptoPagadoSerializer(many=True)
+    #pensiones=serializers.CharField(max_length=20)
+    pensiones=PensionSerializer(many=True)
     
     def create(self, validated_data):
         return Pago(id=None, **validated_data)

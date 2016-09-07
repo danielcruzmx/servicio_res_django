@@ -96,16 +96,15 @@ def calc(pago):
 
     # RECUPERA LOS CONCEPTOS VARIABLES Y SU VALOR
     variables = {}
-    #for c in pago.conceptospago:
-    #    clave = c['tipocpto'] + c['cpto']
-    #    if is_number(c['porcentaje']):
-    #        if c['porcentaje'] > 0:
-    #            valor = c['porcentaje'] / 100.00
-    #        else:
-    #            valor = 0
-    #    else:
-    #        valor = c['monto']
-    #    variables.update({clave: valor})
+    for c in pago.conceptospago:
+        clave = c['tipo'] + c['concepto']
+        if is_number(c['valor']):
+             valor = c['valor']
+        else:
+            valor = 0
+        variables.update({clave: valor})
+
+    #print variables
 
     # EVALUA Y AGREGA CONCEPTOS VARIABLES
     for r in lstreglas:
@@ -140,25 +139,18 @@ def calc(pago):
                     valor = 0
             var_s.update({clavevariable:valor})
 
-    #print var_s
-
     # GUARDA RESULTADOS EN ARREGLO DE PAGADOS
-    resul = {}
+    resul = []
     n = 1
     for r in lstreglas:
         try:
-            #print r.variable
             v = round(var_s[r.variable],2)
-            #print r.descripcion
             if v > 0:
-                resul.update({ n: {'Descripcion': r.descripcion, 'Valor':v, 'Concepto': r.codigo_salida}})
+                resul.append({'tipo': r.codigo_salida[:1] , 'concepto': r.codigo_salida[1:], 'descripcion': r.descripcion, 'valor':v})
                 n = n + 1
-            #print resul
         except:
             pass
-    return collections.OrderedDict(sorted(resul.items()))
-    #print resul
-    #return resul
+    return resul
 
 def ispt(monto):
    res = 0.0

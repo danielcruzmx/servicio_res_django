@@ -43,10 +43,19 @@ class ConstanteViewSet(viewsets.ModelViewSet):
     serializer_class = ConstanteSerializer    
     
 
-pagos = {1: Pago(id = 1, rfc='AAAA850101000', plaza=100, unidad='700', grupo='presupuestal', \
-                nivel='N33', nombramiento='confianza', jerarquia='mando medio', \
-                sueldo=8357.21, compensacion=40970.45, conceptospago='lista conceptos', \
-                conceptospagados={}, pensiones='lista pensiones', sobresueldo=0)}
+pagos = {1: Pago(  id = 1, rfc='DATO  EXEMPLO', plaza=100, unidad='700', grupo='presupuestal', \
+                   nivel='N33', nombramiento='confianza', jerarquia='mando medio', \
+                   sueldo=8357.21, compensacion=40970.45, sobresueldo=0, \
+                   conceptospago=[
+                       {"tipo": "D", "concepto": "51", "valor": 275.13},\
+                       {"tipo": "D", "concepto": "82", "valor": 10.0}
+                   ], \
+                   pensiones=[
+                       {'numero':1, "beneficiario" : "NOMBRE BENEFICIARIO", "monto": 0, "porcentaje": 40.0, "conceptos": "P07|P06|D01|..." }
+                   ],
+                   conceptospagados=[] \
+                )
+        }
 
 def get_next_pago_id():
     return max(pagos) + 1
@@ -70,6 +79,7 @@ class PagoViewSet(viewsets.ViewSet):
             x = calc(pago)
             pago.setconceptospagados(x)
             #
-            pagos[pago.id] = pago
+            #pagos[pago.id] = pago
+            pagos[2] = pago
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
