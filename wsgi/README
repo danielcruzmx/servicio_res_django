@@ -1,1 +1,7 @@
-Start your django app here:
+Servicio REST con Django RestFramework
+
+- Recibe un objeto
+- Valida que el objeto este bien construido
+- Realiza el calculo de nomina segun los atributos del objeto
+- Las reglas de calculo se define en una base de datos 
+- Se regresan los resutados en el mismo objeto
