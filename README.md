@@ -1,3 +1,6 @@
+Despues de leer esto leer el README en el directorio wsgi
+=========================================================
+
 Django on OpenShift
 ===================
 
