@@ -1,5 +1,7 @@
 from rest_framework import serializers
 
+# opciones de validacion
+
 JERARQUIAS = (
     'mando medio',
     'personal de mando',
