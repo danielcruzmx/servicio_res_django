@@ -29,16 +29,19 @@ def existe(clave, param):
 def validaconcepto(nivel, regla):
     ret =  False
 
+    niv = nivel.jerarquia.replace('personal','').strip(' ').replace('de',' ').strip(' ').upper()
+    nom = nivel.nombramiento.replace('personal','').strip(' ').replace('de',' ').strip(' ').upper()
+
     if regla.jerarquias == 'todos':
        ret = True
-    elif nivel.jerarquia.upper() in regla.jerarquias.upper():
+    elif niv in regla.jerarquias.upper():
        ret = True
     else:
        ret = False
 
     if regla.nombramientos == 'todos':
        ret = True
-    elif nivel.nombramiento.upper() in regla.nombramientos.upper():
+    elif nom in regla.nombramientos.upper():
        ret = True
     else:
        ret = False

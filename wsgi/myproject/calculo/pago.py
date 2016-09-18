@@ -2,19 +2,35 @@ from rest_framework import serializers
 
 JERARQUIAS = (
     'mando medio',
+    'personal de mando',
+    'personal de mando superior',
+    'servidor publico superior',
     'superior',
+    'personal operativo',
     'operativo',
-    'enlace'
+    'personal de enlace',
+    'enlace',
+    'enlace alta responsabilidad',
+    'honorarios',
+    'personal de honorarios'
 )
 
 NOMBRAMIENTOS = (
     'base',
-    'confianza'
+    'personal de base',
+    'confianza',
+    'personal de confianza'
+    'honorarios',
+    'personal de honorarios'
 )
 
 GRUPOS = (
     'presupuestal',
-    'eventual'
+    'personal estructura',
+    'estructura',
+    'personal eventual',
+    'eventual',
+    'personal en el extranjero'
 )
 
 class Pago(object):
@@ -31,7 +47,7 @@ class Pago(object):
 class ConceptoSerializer(serializers.Serializer):
     tipo = serializers.CharField(max_length=2)
     concepto = serializers.CharField(max_length=4)
-    valor = serializers.DecimalField(max_digits=10, decimal_places=2)
+    valor = serializers.DecimalField(max_digits=10, decimal_places=5)
 
 class ConceptoPagadoSerializer(serializers.Serializer):
     tipo = serializers.CharField(max_length=2)
